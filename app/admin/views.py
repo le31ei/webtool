@@ -17,6 +17,7 @@ def login():
     :return:
     """
     if request.method == "GET":
+        session.pop('user',None)
         return render_template('admins/login.html')
     if request.method == "POST":
         username = request.json['username']
@@ -39,7 +40,7 @@ def index():
     if request.method == "GET":
         return render_template('admins/index/index.html')
     if request.method == "POST":
-        return "helloword index"
+        return "123"
 
 @admins.route('/logout', methods = ['GET', 'POST'])
 def logout():

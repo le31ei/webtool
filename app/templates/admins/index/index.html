@@ -2,7 +2,7 @@
 {% block title %}WEBTool{% endblock %}
 {% block body %}
 <body class="skin-blue sidebar-mini">
-    <div class="wrap">
+    <div class="wrapper">
         <header class="main-header">
             <a href="#" class="logo">
                 <span class="logo-mini"><b>W</b>T</span>
@@ -134,6 +134,7 @@
     {% block js %}
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='dist/js/app.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/admin/index.js') }}" type="text/javascript"></script>
     {% endblock %}
 </body>
