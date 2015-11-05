@@ -13,9 +13,9 @@ def getPasswordMd5(password, regDate):
     m.update(password+regDate)
     return m.hexdigest()
 
-def getRegTime():
+def getTimeNow():
     """
-    获取注册日期
-    :return: 注册时间戳
+    获取当前日期时间戳
+    :return: 时间戳
     """
     return int(time.time())
