@@ -4,7 +4,7 @@
 DEBUG = True
 
 #后台路径
-ADMIN_PATH = 'xxx'
+ADMIN_PATH = 'xxxx'
 
 
 #数据库
