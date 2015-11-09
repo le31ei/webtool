@@ -4,7 +4,9 @@ from app import db
 
 
 class AdminUser(db.Model):
-
+    """
+    管理员model
+    """
     __tablename__ = 'AdminUser'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     uname = db.Column(db.String(150), unique=True, nullable=False, index=True)
@@ -17,4 +19,5 @@ class AdminUser(db.Model):
         self.passwd = password
         self.regDate = regDate
         self.email = email
+
 
