@@ -4,7 +4,7 @@
 DEBUG = True
 
 #后台路径
-ADMIN_PATH = 'xweq'
+ADMIN_PATH = 'xxx'
 
 
 #数据库
