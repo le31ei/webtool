@@ -1,20 +1,25 @@
 webtool
 =======
-使用说明：
-    根目录添加config.py，格式：
-    #coding=utf8
-    #调试
-    DEBUG = True
-    #后台路径
-    ADMIN_PATH = 'xxx'
-    #数据库
-    SQLALCHEMY_DATABASE_URI = "mysql://xxx:xxx@localhost/webtool"
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-    #session 密钥
-    SECRET_KEY = 'xxx'
+web工具平台
+-------
 
-V0.1:
-    登录功能
+使用说明：<br>
+    根目录添加config.py，格式：<br>
+    ```python
+    \#coding=utf8<br>
+    \#调试<br>
+    DEBUG = True<br>
+    \#后台路径<br>
+    ADMIN_PATH = 'xxx'<br>
+    \#数据库<br>
+    SQLALCHEMY_DATABASE_URI = "mysql://xxx:xxx@localhost/webtool"<br>
+    SQLALCHEMY_TRACK_MODIFICATIONS = True<br>
+    \#session 密钥<br>
+    SECRET_KEY = 'xxx'<br>
 
-v0.1.1:
-    后台登录功能以及后台index页面布局
+
+#V0.1:
+    登录功能<br>
+
+#v0.1.1:
+    后台登录功能以及后台index页面布局<br>
