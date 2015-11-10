@@ -8,7 +8,7 @@ $(function () {
             password.focus();
         }else{
             $.ajax({
-                url:'/fcknsf/login',
+                url:'login',
                 type:"POST",
                 contentType: "application/json",
                 data:JSON.stringify({

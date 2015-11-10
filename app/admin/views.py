@@ -3,7 +3,7 @@ from flask import Blueprint,render_template,redirect,url_for,\
     request,jsonify,session
 from app import app
 from models import AdminUser
-from util.util import getPasswordMd5
+from util.util import getPasswordMd5, getServerInfo
 from flask.ext.login import login_user, login_required, logout_user
 
 admins = Blueprint("admins", __name__, static_folder='static', template_folder='templates',url_prefix='/'+app.config['ADMIN_PATH'])
@@ -54,4 +54,19 @@ def logout():
     logout_user()
     return redirect(url_for("admins.login"))
 
+
+@admins.route('/getServerInfo', methods=['GET'])
+@login_required
+def serverinfo():
+    cpuinfo = getServerInfo.getCPUuse()
+    meminfo = getServerInfo.getMemuse()
+    return jsonify({'cpu':cpuinfo,'mem':meminfo})
+
+
+@admins.route('/usercontrol/<action>', methods=["GET","POST"])
+@login_required
+def usercontrol(action):
+    if request.method=="GET":
+        if action == 'listuser':
+            return render_template("admins/index/pages/userlist.html")
 

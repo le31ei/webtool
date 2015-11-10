@@ -13,8 +13,27 @@
         </div>
         <ul class="sidebar-menu">
             <li class="header">功能表</li>
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a> </li>
+            <li class="active">
+                <a href="{{ url_for('admins.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>仪表盘</span>
+                </a>
+            </li>
+            <li class="treeview active">
+                <a href="#">
+                    <i class="fa fa-user"></i>
+                    <span>用户管理</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu menu-open">
+                    <li><a href="#"><i class="fa fa-user-plus"></i>添加用户 </a> </li>
+                    <li><a href="{{ url_for('admins.usercontrol', action='listuser') }}"><i class="fa fa-user-md"></i>用户列表 </a> </li>
+                </ul>
+            </li>
         </ul>
     </section>
 </aside>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/admin/left.js') }}"></script>
 {% endblock %}
