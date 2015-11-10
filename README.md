@@ -5,7 +5,6 @@ web工具平台
 
 使用说明：<br>
     根目录添加config.py，格式：<br>
-    ```Python
     #coding=utf8<br>
     #调试<br>
     DEBUG = True<br>
@@ -18,8 +17,8 @@ web工具平台
     SECRET_KEY = 'xxx'<br>
 
 
-#V0.1:
-    登录功能<br>
+###V0.1:
+    登录功能
 
-#v0.1.1:
-    后台登录功能以及后台index页面布局<br>
+###v0.1.1:
+    后台登录功能以及后台index页面布局
