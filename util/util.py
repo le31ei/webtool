@@ -29,4 +29,4 @@ def getRamdomString(str):
     """
     m = hashlib.md5()
     m.update(str(time.time())+ str)
-    return base64.encodestring(m.digest())[:-3].replace('/', '$')
+    return base64.encodestring(m.digest())[:-3].replace('/', '$').encode('utf-8')

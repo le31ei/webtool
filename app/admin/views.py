@@ -3,10 +3,11 @@ from flask import Blueprint,render_template,redirect,url_for,\
     request,jsonify,session
 from app import app
 from models import AdminUser
-from util.util import getPasswordMd5,getTimeNow
-from authrigh import isLogin
+from util.util import getPasswordMd5
+from flask.ext.login import login_user, login_required, logout_user
 
 admins = Blueprint("admins", __name__, static_folder='static', template_folder='templates',url_prefix='/'+app.config['ADMIN_PATH'])
+
 
 @admins.route('/',methods = ['GET','POST'])
 @admins.route('/login', methods=['GET', 'POST'])
@@ -17,7 +18,7 @@ def login():
     :return:
     """
     if request.method == "GET":
-        session.pop('user', None)
+        logout_user()
         return render_template('admins/login.html')
     if request.method == "POST":
         username = request.json['username']
@@ -26,14 +27,13 @@ def login():
             user = AdminUser.query.filter_by(uname=username).first()
             if user != None:
                 if user.passwd == getPasswordMd5(password,user.regDate):
-                    session['user'] = {'username': username, 'loginTime': getTimeNow()}
+                    login_user(user)
                     return jsonify({'url': url_for('admins.index'), 'msg': 'success'})
     return jsonify({'msg': 'failed'})
 
 
 @admins.route('/index', methods=['GET', 'POST'])
-@isLogin
-#@isLoginTimeOut
+@login_required
 def index():
     """
     后台首页视图
@@ -45,12 +45,13 @@ def index():
         return "123"
 
 @admins.route('/logout', methods = ['GET', 'POST'])
+@login_required
 def logout():
     """
     退出函数 v0.1
     :return: 跳转的url
     """
-    session.pop('user',None)
+    logout_user()
     return redirect(url_for("admins.login"))
 
 

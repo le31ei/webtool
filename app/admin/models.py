@@ -20,4 +20,22 @@ class AdminUser(db.Model):
         self.regDate = regDate
         self.email = email
 
+    def get_id(self):
+        return unicode(self.id)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+
+
+
+
+
+
 

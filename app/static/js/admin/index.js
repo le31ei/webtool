@@ -1,3 +1,5 @@
-/**
- * Created by root on 15-11-4.
- */
+$(function () {
+   $('#btn-exit').click(function () {
+       window.location.href="/fcknsf/logout";
+   });
+});
