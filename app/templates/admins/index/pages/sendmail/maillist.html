@@ -1,0 +1,49 @@
+{% extends "admins/index/footer.html" %}
+{% block title %}WEBTool{% endblock %}
+{% block body %}
+<body class="skin-blue sidebar-mini">
+    <div class="wrapper">
+        {% block header %}
+            {{ super() }}
+        {% endblock %}
+        {% block left %}
+            {{ super() }}
+        {% endblock %}
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>SendMail<small>邮件地址列表</small></h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{ url_for('admins.index') }}"><i class="fa fa-user"></i> UserList</a></li>
+                    <li class="active">Here</li>
+                </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">邮件地址列表</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button id="btn-send" class="btn btn-default">发送</button>
+            </div>
+        </section>
+      </div>
+        {% block footer %}
+            {{ super() }}
+        {% endblock %}
+    </div>
+    {% block js %}
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='dist/js/app.min.js') }}"></script>
+        {{ super() }}
+    <script src="{{ url_for('static', filename='js/admin/sendmail.js') }}" type="text/javascript"></script>
+    {% endblock %}
+</body>
+
+
+{% endblock %}

@@ -30,6 +30,17 @@
                     <li><a href="{{ url_for('admins.usercontrol', action='listuser') }}"><i class="fa fa-user-md"></i>用户列表 </a> </li>
                 </ul>
             </li>
+            <li class="treeview active">
+                <a href="">
+                    <i class="fa fa-user"></i>
+                    <span>发送邮件</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu menu-open">
+                    <li><a href="{{ url_for('admins.sendmail',action='adduser') }}"><i class="fa fa-user-plus"></i>添加地址 </a> </li>
+                    <li><a href="{{ url_for('admins.sendmail',action='index') }}"><i class="fa fa-user-md"></i>邮件地址列表 </a> </li>
+                </ul>
+            </li>
         </ul>
     </section>
 </aside>

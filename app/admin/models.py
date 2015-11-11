@@ -33,6 +33,21 @@ class AdminUser(db.Model):
         return False
 
 
+class MailUser(db.Model):
+    '''
+        mailuser
+    '''
+    __tablename__ = "MailUser"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(50),nullable=False)
+    email = db.Column(db.String(50),index=True,unique=True)
+
+    def __init__(self,username,email):
+        self.username = username
+        self.email = email
+
+
+
 
 
 

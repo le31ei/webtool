@@ -13,3 +13,5 @@ from home.views import homes
 
 app.register_blueprint(admins)
 app.register_blueprint(homes)
+
+

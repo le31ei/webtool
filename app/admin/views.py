@@ -2,9 +2,11 @@
 from flask import Blueprint,render_template,redirect,url_for,\
     request,jsonify,session
 from app import app
-from models import AdminUser
+from models import AdminUser, MailUser
 from util.util import getPasswordMd5, getServerInfo
 from flask.ext.login import login_user, login_required, logout_user
+from celerysend import send_my_email
+from app import db
 
 admins = Blueprint("admins", __name__, static_folder='static', template_folder='templates',url_prefix='/'+app.config['ADMIN_PATH'])
 
@@ -70,3 +72,31 @@ def usercontrol(action):
         if action == 'listuser':
             return render_template("admins/index/pages/userlist.html")
 
+
+@admins.route('/sendmail/<action>', methods=["GET", "POST"])
+@login_required
+def sendmail(action):
+    '''
+    定时抓取乌云等网站的信息，并通过邮件发送
+    :return:
+    '''
+    if request.method == "POST":
+        username = request.json['adduser']
+        usermail = request.json['usermail']
+        if username != "" and usermail != "":
+            useraddmail = MailUser(username,usermail)
+            if useraddmail != None:
+                try:
+                    db.session.add(useraddmail)
+                    db.session.commit()
+                    return jsonify({'msg':'success'})
+                except Exception, e:
+                    print e
+        return jsonify({'msg':'faild'})
+    if action == "index":
+        return render_template('admins/index/pages/sendmail/maillist.html')
+    elif action == "send":
+        send_my_email.delay()
+        return jsonify({"send":"ok"})
+    elif action == 'adduser':
+        return render_template('admins/index/pages/sendmail/addmailuser.html')

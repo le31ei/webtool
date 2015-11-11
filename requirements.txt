@@ -3,3 +3,8 @@ flask-migrate
 flask_cache
 flask-Login
 psutil
+Celery
+Flask-Mail
+requests
+beautifulsoup4
+lxml
