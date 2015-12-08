@@ -30,6 +30,7 @@ def login():
             if user != None:
                 if user.passwd == getPasswordMd5(password,user.regDate):
                     login_user(user)
+                    session.permanent = True
                     return jsonify({'url': url_for('admins.index'), 'msg': 'success'})
     return jsonify({'msg': 'failed'})
 
