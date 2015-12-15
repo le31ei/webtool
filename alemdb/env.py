@@ -18,7 +18,6 @@ fileConfig(config.config_file_name)
 import os
 import sys
 root = os.path.dirname(__file__)+'/../'
-print root
 sys.path.append(root)
 from app import db
 target_metadata = db.metadata

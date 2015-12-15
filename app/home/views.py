@@ -5,10 +5,17 @@ from flask import Blueprint, request, render_template,session,\
 from util.util import create_validate_code
 import StringIO
 from app import app, db
-from util.util import getPasswordMd5, getTimeNow
+from util.util import getPasswordMd5, getTimeNow, isEmailString
 from .models import Users, InviteCodeList
+from flask.ext.login import login_required, login_user
 
 homes = Blueprint("homes", __name__, static_folder='static',  template_folder='templates')
+
+
+@homes.route("/index", methods = ["GET", "POST"])
+@login_required
+def index():
+    return render_template("home/index/pages/index.html")
 
 
 @homes.route('/', methods = ["GET", "POST"])
@@ -21,7 +28,32 @@ def login():
     if request.method == "GET":
         return render_template("home/login.html")
     elif request.method == "POST":
-        return render_template("")
+        username = request.json["username"]
+        password = request.json["password"]
+        yzCode = request.json["yzCode"]
+        try:
+            session_yzCode = session["yzCode"]
+            if getPasswordMd5(yzCode, "O(@(#@EJW@!JIEW") != session_yzCode:
+                session.pop("yzCode", None)
+                return jsonify({"status":"yzcode", "msg":"验证码错误"})
+        except:
+            return jsonify({"status":"yzcode", "msg":"验证码错误"})
+        if isEmailString(username): #email形式登录
+            users = Users.query.filter_by(email=username).first()
+        else:
+            users = Users.query.filter_by(username=username).first()
+
+        if users != None:
+            password_md5 = getPasswordMd5(password,users.regDate)
+            if password_md5 == users.password:#登录成功
+                login_user(users)
+                session.permanent = True
+                return jsonify({"status":"success","url":url_for("homes.index")})
+
+        return jsonify({"status":"failed", "msg":"用户名或密码错误"})
+
+
+
 
 
 
@@ -38,6 +70,8 @@ def register():
         username = request.json['username']
         password = request.json['password']
         email = request.json['email']
+        if not isEmailString(email):
+            return jsonify({"stauts":"failed", "msg":"请输入正确的邮箱"})
         regDate = getTimeNow()
         try:
             invicode = InviteCodeList.query.filter_by(inviteCode=inviteCode).first()
@@ -47,8 +81,8 @@ def register():
                     db.session.add(users)
                     db.session.commit()
                     #邀请码失效
-                    #...
-
+                    #invicode.codestatus = False
+                    #db.session.commit()
                     return jsonify({"status":"success", "url": url_for("homes.login")})
                 except:
                     return jsonify({"status":"failed", "msg":"填写的信息有误"})

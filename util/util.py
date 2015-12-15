@@ -1,7 +1,7 @@
 #coding=utf8
 import hashlib
 import time,base64,psutil
-import random,os
+import random, os, re
 import Image, ImageDraw, ImageFont, ImageFilter
 
 
@@ -128,3 +128,16 @@ def create_validate_code(size=(90, 30),
 
     return img,strs
 
+
+def isEmailString(str):
+    """
+    判断是否是邮箱格式
+    :param str:字符串
+    :return:
+    """
+    s = r"^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$"
+    patten = re.compile(s)
+    if patten.match(str):
+        return True
+    else:
+        return False
