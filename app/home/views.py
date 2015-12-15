@@ -1,13 +1,13 @@
 #coding=utf8
 
 from flask import Blueprint, request, render_template,session,\
-    jsonify, url_for
+    jsonify, url_for, redirect
 from util.util import create_validate_code
 import StringIO
 from app import app, db
 from util.util import getPasswordMd5, getTimeNow, isEmailString
 from .models import Users, InviteCodeList
-from flask.ext.login import login_required, login_user
+from flask.ext.login import login_required, login_user, logout_user
 
 homes = Blueprint("homes", __name__, static_folder='static',  template_folder='templates')
 
@@ -53,6 +53,10 @@ def login():
         return jsonify({"status":"failed", "msg":"用户名或密码错误"})
 
 
+@homes.route("/logout", methods = ["GET"])
+def logout():
+    logout_user()
+    return redirect(url_for("homes.login"))
 
 
 
