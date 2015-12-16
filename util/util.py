@@ -24,14 +24,14 @@ def getTimeNow():
     return int(time.time())
 
 
-def getRamdomString(str):
+def getRamdomString(strm):
     """
-    生成一个唯一的字符串用于激活码及注册功能,以及用户的userid
+    生成一个唯一的字符串用于激活码
     str: 用户名
     :return:
     """
     m = hashlib.md5()
-    m.update(str(time.time())+ str)
+    m.update(str(time.time())+ strm)
     return base64.encodestring(m.digest())[:-3].replace('/', '$').encode('utf-8')
 
 

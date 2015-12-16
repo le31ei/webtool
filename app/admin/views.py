@@ -3,10 +3,12 @@ from flask import Blueprint,render_template,redirect,url_for,\
     request,jsonify,session
 from app import app
 from models import AdminUser, MailUser
-from util.util import getPasswordMd5, getServerInfo
+from util.util import getPasswordMd5, getServerInfo, getRamdomString
 from flask.ext.login import login_user, login_required, logout_user
 from celerysend import send_my_email
 from app import db
+from app.home.models import InviteCodeList
+from time import sleep
 
 admins = Blueprint("admins", __name__, static_folder='static', template_folder='templates',url_prefix='/'+app.config['ADMIN_PATH'])
 
@@ -101,3 +103,36 @@ def sendmail(action):
         return jsonify({"send":"ok"})
     elif action == 'adduser':
         return render_template('admins/index/pages/sendmail/addmailuser.html')
+
+
+@admins.route("/invitecontrol/<action>", methods = ["GET", "POST"])
+@admins.route("/invitecontrol/<action>/<int:page>", methods = ["GET", "POST"])
+@login_required
+def invitecontrol(action,page=None):
+    if request.method == "GET":
+        if action == "index":
+            #分页查询所有code
+            pages = page
+            if pages < 1 or pages == None:
+                pages = 1
+            PAGE_SUM = 7 #默认一页最大7条
+            codes = InviteCodeList.query.paginate(pages, PAGE_SUM, False)
+            if codes != None:
+                show_list = codes.items  #取出要显示的条数
+            return render_template("admins/index/pages/invitecode/codecontrol.html", codes = show_list, pages = codes)
+
+    if request.method == "POST":
+        if action == "generate":
+            number = request.json['num']
+            if number.isdigit():
+                #如果是整数
+                for i in range(0,int(number)):
+                    #产生随机字符
+                    try:
+                        code = InviteCodeList(getRamdomString(str(app.config['INVITE_CODE_KEY'])))
+                        db.session.add(code)
+                        db.session.commit()
+                        sleep(0.1)
+                    except:
+                        pass
+                return jsonify({"status":"success"})

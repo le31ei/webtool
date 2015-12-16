@@ -1,0 +1,87 @@
+{% extends "admins/index/footer.html" %}
+{% block title %}WEBTool{% endblock %}
+{% block body %}
+<body class="skin-blue sidebar-mini">
+    <div class="wrapper">
+        {% block header %}
+            {{ super() }}
+        {% endblock %}
+        {% block left %}
+            {{ super() }}
+        {% endblock %}
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>InviteCode<small>邀请码操作</small></h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{ url_for('admins.index') }}"><i class="fa fa-dashboard"></i> InviteCode</a></li>
+                    <li class="active">Here</li>
+                </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">邀请码管理</h3>
+                            <div class="box-tools">
+                                <div class="input-group">
+                                    <input type="text" class="form-control input-sm pull-right" id="code_num" placeholder="Number">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-default" id="btn-generate">生成邀请码</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th class="col-xs-8">邀请码</th>
+                                        <th class="col-xs-4">状态</th>
+                                    </tr>
+                                    {% for code in codes %}
+                                    <tr>
+                                        <th>{{ code.inviteCode }}</th>
+                                        <th>
+                                            {% if code.codestatus %}
+                                                <label class="badge bg-green">未使用</label>
+                                            {% else %}
+                                                <label class="badge bg-red">已使用</label>
+                                            {% endif %}
+                                        </th>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button class="btn btn-danger">清空邀请码</button>
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                {% if pages.has_prev %}
+                                <li><a href="{{ url_for("admins.invitecontrol", action="index", page=pages.prev_num) }}">前一页</a></li>
+                                {% endif %}
+                                <li><a href="#">第{{ pages.page }}页，共{{ pages.pages }}页</a> </li>
+                                {% if pages.has_next %}
+                                <li><a href="{{ url_for("admins.invitecontrol", action="index", page=pages.next_num) }}">后一页</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      </div>
+        {% block footer %}
+            {{ super() }}
+        {% endblock %}
+    </div>
+    {% block js %}
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='dist/js/app.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/invitecode/invitecode.js') }}" type="text/javascript"></script>
+    {% endblock %}
+</body>
+
+
+{% endblock %}

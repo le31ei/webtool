@@ -85,8 +85,8 @@ def register():
                     db.session.add(users)
                     db.session.commit()
                     #邀请码失效
-                    #invicode.codestatus = False
-                    #db.session.commit()
+                    invicode.codestatus = False
+                    db.session.commit()
                     return jsonify({"status":"success", "url": url_for("homes.login")})
                 except:
                     return jsonify({"status":"failed", "msg":"填写的信息有误"})
