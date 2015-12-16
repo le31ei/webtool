@@ -25,4 +25,16 @@ $(function () {
             });
         }
     });
+
+    //清空所有邀请码
+    $("#btn-clear").click(function () {
+        alert("click");
+        $.getJSON('/'+basePath+'/invitecontrol/deletecodes', function (data) {
+            if(data.status == "success"){
+                //删除成功
+                $("#clear-modal").modal("hide");
+                window.location.reload();
+            }
+        });
+    });
 });

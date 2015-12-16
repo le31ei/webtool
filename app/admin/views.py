@@ -120,7 +120,15 @@ def invitecontrol(action,page=None):
             if codes != None:
                 show_list = codes.items  #取出要显示的条数
             return render_template("admins/index/pages/invitecode/codecontrol.html", codes = show_list, pages = codes)
-
+        if action== "deletecodes":
+            try:
+                delcodes = InviteCodeList.query.all()
+                for delcode in delcodes:
+                    db.session.delete(delcode)
+                db.session.commit()
+                return jsonify({"status":"success"})
+            except:
+                pass
     if request.method == "POST":
         if action == "generate":
             number = request.json['num']

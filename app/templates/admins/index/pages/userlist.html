@@ -11,7 +11,7 @@
         {% endblock %}
         <div class="content-wrapper">
             <section class="content-header">
-                <h1>DashBoard<small>用户列表</small></h1>
+                <h1>DashBoard<small>管理员用户列表</small></h1>
                 <ol class="breadcrumb">
                     <li><a href="{{ url_for('admins.index') }}"><i class="fa fa-user"></i> UserList</a></li>
                     <li class="active">Here</li>
@@ -23,6 +23,27 @@
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">普通用户</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th class="col-xs-8">用户名</th>
+                                        <th class="col-xs-4">操作</th>
+                                    </tr>
+                                    {% if users %}
+                                    {% else %}
+                                        <tr><th>暂无数据</th></tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box-footer">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="#">前一页</a> </li>
+                                <li><a href="#">第n页，共n页</a> </li>
+                                <li><a href="#">后一页</a> </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

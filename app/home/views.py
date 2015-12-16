@@ -83,7 +83,7 @@ def register():
                 try:
                     users = Users(email, username, getPasswordMd5(password,str(regDate)), regDate)
                     db.session.add(users)
-                    db.session.commit()
+                    #db.session.commit()
                     #邀请码失效
                     invicode.codestatus = False
                     db.session.commit()
