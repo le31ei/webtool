@@ -5,7 +5,7 @@ from flask import Blueprint, request, render_template,session,\
 import StringIO
 from app import app, db
 from util.util import getPasswordMd5, getTimeNow, isEmailString, ValidCode
-from .models import Users, InviteCodeList
+from app.models import Users, InviteCodeList
 from flask.ext.login import login_required, login_user, logout_user
 
 homes = Blueprint("homes", __name__, static_folder='static',  template_folder='templates')
@@ -123,3 +123,5 @@ def randomcode(rand):
         response = app.make_response(buf_str)
         response.headers['Content-Type'] = 'image/jpeg'
         return response
+
+

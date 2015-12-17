@@ -1,6 +1,21 @@
-#coding=utf-8
+#coding=utf8
 
 from app import db
+
+
+class MailUser(db.Model):
+    '''
+        mailuser
+    '''
+    __tablename__ = "MailUser"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(50),nullable=False)
+    email = db.Column(db.String(50),index=True,unique=True)
+
+    def __init__(self,username,email):
+        self.username = username
+        self.email = email
+
 
 class Users(db.Model):
     """
@@ -13,13 +28,15 @@ class Users(db.Model):
     password = db.Column(db.String(50), nullable=False)
     regDate = db.Column(db.String(50), nullable=False)
     isActive = db.Column(db.Boolean, nullable=False)
+    isAdmin = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, email, username, password, regDate, isActive=False):
+    def __init__(self, email, username, password, regDate, isActive=False, isAdmin=False):
         self.email = email
         self.username = username
         self.password = password
         self.regDate = regDate
         self.isActive = isActive
+        self.isAdmin = isAdmin
 
     """
     flask-login必须实现的接口
@@ -28,7 +45,10 @@ class Users(db.Model):
         return unicode(self.id)
 
     def is_authenticated(self):
-        return False  #不能登录后台
+        if self.isAdmin is False:
+            return False  #不能登录后台
+        else:
+            return True
 
     def is_active(self):
         return True
@@ -47,3 +67,12 @@ class InviteCodeList(db.Model):
     def __init__(self, inviteCode, codestatus = True):
         self.inviteCode = inviteCode
         self.codestatus = codestatus
+
+
+
+
+
+
+
+
+

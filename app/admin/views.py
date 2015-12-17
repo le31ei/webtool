@@ -1,13 +1,12 @@
 #coding=utf8
 from flask import Blueprint,render_template,redirect,url_for,\
-    request,jsonify,session
+    request,jsonify,session, g
 from app import app
-from models import AdminUser, MailUser
+from app.models import MailUser,InviteCodeList, Users
 from util.util import getPasswordMd5, getServerInfo, getRamdomString
 from flask.ext.login import login_user, login_required, logout_user, current_user
 from celerysend import send_my_email
 from app import db
-from app.home.models import InviteCodeList
 from time import sleep
 from .authrigh import isLogin
 
@@ -29,13 +28,12 @@ def login():
         username = request.json['username']
         password = request.json['password']
         if username != "" and password != "":
-            user = AdminUser.query.filter_by(uname=username).first()
-            if user != None:
-                if user.passwd == getPasswordMd5(password,user.regDate):
-                    if current_user.is_authenticated(): #是否能登陆后台
-                        login_user(user)
-                        session.permanent = True  #session有效时间
-                        return jsonify({'url': url_for('admins.index'), 'msg': 'success'})
+            user = Users.query.filter_by(username=username).first()
+            if user is not None:
+                if user.password == getPasswordMd5(password,user.regDate):
+                    login_user(user)
+                    session.permanent = True  #session有效时间
+                    return jsonify({'url': url_for('admins.index'), 'msg': 'success'})
     return jsonify({'msg': 'failed'})
 
 
@@ -48,13 +46,15 @@ def index():
     :return:
     """
     if request.method == "GET":
-        return render_template('admins/index/pages/index.html')
+        if current_user.is_authenticated():
+            return render_template('admins/index/pages/index.html')
+        else:
+            return redirect(url_for("homes.login"))
     if request.method == "POST":
         return "123"
 
 
 @admins.route('/logout', methods = ['GET', 'POST'])
-@isLogin
 @login_required
 def logout():
     """

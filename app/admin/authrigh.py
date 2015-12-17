@@ -3,7 +3,7 @@ from functools import wraps
 from flask import session,redirect, url_for
 from util.util import getTimeNow
 from flask.ext.login import current_user,logout_user
-from .models import AdminUser
+from app import app
 
 
 def isLogin(func):
@@ -14,9 +14,10 @@ def isLogin(func):
     """
     @wraps(func)
     def isUserlogin(*args, **kwargs):
-        if not current_user.is_authenticated():
-            logout_user()
-            return redirect(url_for('homes.logout'))
+        with app.app_context():
+            if not current_user.is_authenticated:
+                logout_user()
+                return redirect(url_for('homes.logout'))
         return func(*args, **kwargs)
     return isUserlogin
 

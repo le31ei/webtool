@@ -3,9 +3,7 @@ from app import app
 from flask_mail import Message
 from app.admin import mail,mycelery
 from util.grabSendmail import GetVulname,get360vul
-from app.admin.models import MailUser
-from app import db
-from app.admin.models import MailUser
+from app.models import MailUser
 
 @mycelery.task
 def send_my_email():
