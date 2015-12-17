@@ -51,7 +51,7 @@ def index():
         return render_template('admins/index/pages/index.html')
     if request.method == "POST":
         return "123"
-    
+
 
 @admins.route('/logout', methods = ['GET', 'POST'])
 @isLogin

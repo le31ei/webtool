@@ -2,10 +2,9 @@
 
 from flask import Blueprint, request, render_template,session,\
     jsonify, url_for, redirect
-from util.util import create_validate_code
 import StringIO
 from app import app, db
-from util.util import getPasswordMd5, getTimeNow, isEmailString
+from util.util import getPasswordMd5, getTimeNow, isEmailString, ValidCode
 from .models import Users, InviteCodeList
 from flask.ext.login import login_required, login_user, logout_user
 
@@ -33,7 +32,7 @@ def login():
         yzCode = request.json["yzCode"]
         try:
             session_yzCode = session["yzCode"]
-            if getPasswordMd5(yzCode, "O(@(#@EJW@!JIEW") != session_yzCode:
+            if getPasswordMd5(yzCode.lower(), "O(@(#@EJW@!JIEW") != session_yzCode:
                 session.pop("yzCode", None)
                 return jsonify({"status":"yzcode", "msg":"验证码错误"})
         except:
@@ -115,8 +114,9 @@ def randomcode(rand):
     :return:
     """
     if request.method == "GET":
-        code_img, strs = create_validate_code() #验证码
-        session['yzCode'] = getPasswordMd5(strs, "O(@(#@EJW@!JIEW")
+        validcode = ValidCode()
+        code_img, strs = validcode.drawCode() #验证码
+        session['yzCode'] = getPasswordMd5(strs.lower(), "O(@(#@EJW@!JIEW")
         buf = StringIO.StringIO()
         code_img.save(buf,'JPEG',quality=70)
         buf_str = buf.getvalue()
