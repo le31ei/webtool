@@ -4,11 +4,12 @@ from flask import Blueprint,render_template,redirect,url_for,\
 from app import app
 from models import AdminUser, MailUser
 from util.util import getPasswordMd5, getServerInfo, getRamdomString
-from flask.ext.login import login_user, login_required, logout_user
+from flask.ext.login import login_user, login_required, logout_user, current_user
 from celerysend import send_my_email
 from app import db
 from app.home.models import InviteCodeList
 from time import sleep
+from .authrigh import isLogin
 
 admins = Blueprint("admins", __name__, static_folder='static', template_folder='templates',url_prefix='/'+app.config['ADMIN_PATH'])
 
@@ -31,14 +32,16 @@ def login():
             user = AdminUser.query.filter_by(uname=username).first()
             if user != None:
                 if user.passwd == getPasswordMd5(password,user.regDate):
-                    login_user(user)
-                    session.permanent = True  #session有效时间
-                    return jsonify({'url': url_for('admins.index'), 'msg': 'success'})
+                    if current_user.is_authenticated(): #是否能登陆后台
+                        login_user(user)
+                        session.permanent = True  #session有效时间
+                        return jsonify({'url': url_for('admins.index'), 'msg': 'success'})
     return jsonify({'msg': 'failed'})
 
 
 @admins.route('/index', methods=['GET', 'POST'])
 @login_required
+@isLogin
 def index():
     """
     后台首页视图
@@ -48,8 +51,10 @@ def index():
         return render_template('admins/index/pages/index.html')
     if request.method == "POST":
         return "123"
+    
 
 @admins.route('/logout', methods = ['GET', 'POST'])
+@isLogin
 @login_required
 def logout():
     """
@@ -61,6 +66,7 @@ def logout():
 
 
 @admins.route('/getServerInfo', methods=['GET'])
+@isLogin
 @login_required
 def serverinfo():
     cpuinfo = getServerInfo.getCPUuse()
@@ -69,6 +75,7 @@ def serverinfo():
 
 
 @admins.route('/usercontrol/<action>', methods=["GET","POST"])
+@isLogin
 @login_required
 def usercontrol(action):
     if request.method=="GET":
@@ -77,6 +84,7 @@ def usercontrol(action):
 
 
 @admins.route('/sendmail/<action>', methods=["GET", "POST"])
+@isLogin
 @login_required
 def sendmail(action):
     '''
@@ -107,6 +115,7 @@ def sendmail(action):
 
 @admins.route("/invitecontrol/<action>", methods = ["GET", "POST"])
 @admins.route("/invitecontrol/<action>/<int:page>", methods = ["GET", "POST"])
+@isLogin
 @login_required
 def invitecontrol(action,page=None):
     if request.method == "GET":

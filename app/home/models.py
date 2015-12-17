@@ -28,7 +28,7 @@ class Users(db.Model):
         return unicode(self.id)
 
     def is_authenticated(self):
-        return True
+        return False  #不能登录后台
 
     def is_active(self):
         return True
